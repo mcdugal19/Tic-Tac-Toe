@@ -1,23 +1,31 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
     color: black;
-    font-size: 30px;
+    
 }
 
 .grid {
-    background-color: lightgrey;
+    background-color: lightblue;
     height: 300px;
     width: 300px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    border: 2px solid black
+    border: 2px solid black;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bolder;
+    font-size: 50px;
+    color: red;
 }
 
-.h1 {
+
+h1 {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    font-weight: bolder;
+    font-size: 50px;
+    color: darkblue;
 }
 
 body{
@@ -25,6 +33,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: lightcoral;
 }
 
 .box{
@@ -37,10 +46,44 @@ body{
 
 .whitesmoke{
     background-color: whitesmoke;
+    border: 2px solid black;
 } 
 
 .darkgrey{
     background-color: darkgrey;
+    border: 2px solid black;
+}
+
+.scoreTicker{
+    background-color: whitesmoke;
+    border: 2px solid black;
+}
+
+.score1{
+    background-color: whitesmoke;
+    border: 2px solid black;
+}
+
+.score2{
+    background-color: whitesmoke;
+    border: 2px solid black;
+}
+
+.scorePc{
+    background-color: whitesmoke;
+    border: 2px solid black;
+}
+
+button{
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin: 15px;
+}
+
+form{
+    background-color: whitesmoke;
+    border: 2px solid black;
+    margin-bottom: 15px;
 }
 /* 
 .score{

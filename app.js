@@ -1,102 +1,171 @@
 const gameState = {
-    board: [
-            [null, null, null],
-            [null, null, null],
-            [null, null, null],
-    ],
-    currentPlayer: 'X' || 'O', //WANT To make it random, insert variable
-    // then add a function to randomize the x and o even vs odd
-    // math.floor(math.random()) look up doc
-    singlePlayer: true
-    //pcPlayer: true || false
-    // finished: clearboardfunc
-}
+  board: [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null],
+  ],
+  PlayerOrder: XorO,
+  singlePlayer: true,
+  playerOne: "",
+  playerTwo: "",
+  playerPC: "",
+  currentPlayer: "",
+  playerOneName: "",
+  playerTwoName: "",
+  //scoreDisplay: [score1, score2, scorePC],
 
-const grid = document.querySelector('.grid')
+  // finished: clearboardfunc
+};
 
-// grid.addEventListener('click', function (event){
-//     const coordinateArray = event.target.id.split(',')
-//     console.log(coordinateArray)
-//     const x = coordinateArray[0]
-//     const y = coordinateArray[1]
-//     gameState.board[x][y] = gameState.currentPlayer
-//     if (gameState.currentPlayer === 'X') {
-//         gameState.currentPlayer = 'O'
-//     } else if (gameState.currentPlayer === 'O'){
-//         gameState.currentPlayer = 'X'
-//     }
-// })
-
-grid.addEventListener('click', function (event){
-    const coordinateArray = event.target.id.split(',')
-    console.log(coordinateArray)
-    const x = coordinateArray[0]
-    const y = coordinateArray[1]
-    gameState.board[x][y] = gameState.currentPlayer
-    if (gameState.currentPlayer === 'X') {
-        event.target.innerText = 'X'
-        gameState.currentPlayer = 'O'
-    } else if (gameState.currentPlayer === 'O'){
-        event.target.innerText = 'O'
-        gameState.currentPlayer = 'X'
+const grid = document.querySelector(".grid");
+//board checker needs to be inside grid listener
+grid.addEventListener("click", function (event) {
+  const coordinateArray = event.target.id.split(",");
+  console.log(coordinateArray); //remove this later
+  const x = coordinateArray[0];
+  const y = coordinateArray[1];
+  if (event.target != "X" || "O") {
+    gameState.board[x][y] = gameState.currentPlayer;
+    if (gameState.currentPlayer === "X") {
+      event.target.innerText = "X";
+      gameState.currentPlayer = "O";
+    } else if (gameState.currentPlayer === "O") {
+      event.target.innerText = "O";
+      gameState.currentPlayer = "X";
     }
-})
-
+  }
+});
 
 //**HEADER */
+//**User name input */ //add event listener
+let enterName = document.createElement("p");
+enterName.append("Enter Your Name Below:");
+
+let nameForm = document.createElement("form");
+// nameForm.setAttribute("method", "post");
+// nameForm.setAttribute("action", "submit.php");
+
+let nameInput = document.createElement("input");
+nameInput.setAttribute("type", "text");
+nameInput.setAttribute("name", "username");
+nameInput.setAttribute("id", "nameInput")
+
+let nameSubmit = document.createElement("input");
+nameSubmit.setAttribute("type", "submit");
+nameSubmit.setAttribute("id", "nameSubmit")
+// nameSubmit.setAttribute("value", "Submit");
+
+nameForm.appendChild(nameInput);
+nameForm.appendChild(nameSubmit);
+
+
+function getVal(){
+    let value = document.getElementById('nameInput');
+    console.log(value)
+}
+getVal();
+
+
+// Submit button eventListener (maybe use a ternary)
+nameSubmit.addEventListener("click", function (event){
+    event.preventDefault()
+
+    if(gameState.playerOneName === ''){
+    gameState.playerOneName = nameInput.value
+    } else if(gameState.playerOneName !== ''){
+        gameState.playerTwoName = nameInput.value
+    }
+    console.log(gameState.playerOneName)
+    console.log(gameState.playerTwoName)
+})
+
 //**BUTTON TO CHOOSE 1P OR 2P? follow up on deselect when both are clicked*/
-let button1 = document.createElement('button');
-button1.innerText= "Single Player Game?";
-let h1tag = document.getElementsByTagName('h1')[0]
-let button2 = document.createElement('button');
-button2.innerText= "Two Player Game?";
-h1tag.after(button2);
-console.log(h1tag)
-h1tag.after(button1);
+//
+let button1 = document.createElement("button");
+button1.innerText = "Single Player Game?";
+
+let h1tag = document.getElementsByTagName("h1")[0];
+
+let button2 = document.createElement("button");
+button2.innerText = "Two Player Game?";
 
 let selectedColor = ".darkgrey";
 
-button1.addEventListener('click', function (event){
-    gameState.singlePlayer = false;
-    console.log(event.target.tagName)
-    if(event.target.tagName === 'BUTTON'){
-        event.target.classList.toggle('darkgrey');
-        console.log(event.target, 'color')
-        }
-    console.log(event.target, 'gameState changed')
-})
+// H1 TAG ORDER
+h1tag.after(nameForm);
 
-button2.addEventListener('click', function (event){
-    gameState.singlePlayer = false;
-    console.log(event.target.tagName)
-    if(event.target.tagName === 'BUTTON'){
-        event.target.classList.toggle('darkgrey');
-        console.log(event.target, 'color')
-        }
-    console.log(event.target, 'gameState changed')
-})
+h1tag.after(enterName);
+
+h1tag.after(button2);
+
+h1tag.after(button1);
+
+// SCORE TICKER VARIABLES (i++ each score with each win)
+let score1 = document.getElementsByClassName('score1');
+
+let score2 = document.getElementsByClassName('score2');
+
+let scorePC = document.getElementsByClassName('scorePC');
 
 
-function colorize (event){
-    const target = event.target
-    
-        if(event.target.tagName === 'button'){
-        event.target.classList.toggle(selectedColor);
-        console.log(event.target, 'color')
-        }
-        console.log(event.target.tagName, 'outside if')
+
+button1.addEventListener("click", function (event) {
+  gameState.PlayerOrder();
+
+  gameState.singlePlayer = true;
+
+  if (event.target.tagName === "BUTTON") {
+    event.target.classList.toggle("darkgrey");
+  }
+});
+
+button2.addEventListener("click", function (event) {
+  gameState.PlayerOrder();
+
+  gameState.singlePlayer = false;
+  if (event.target.tagName === "BUTTON") {
+    event.target.classList.toggle("darkgrey");
+  }
+});
+
+function colorize(event) {
+  const target = event.target;
+
+  if (event.target.tagName === "button") {
+    event.target.classList.toggle(selectedColor);
+    console.log(event.target, "color");
+  }
+  console.log(event.target.tagName, "outside if");
 }
 
-//**USER NAME INPUT */
-
+//**RANDOMIZE ORDER FUNCTION */
+//WANT To make it random, insert variable
+// then add a function to randomize the x and o even vs odd
+// math.floor(math.random()) look up doc *change X
+function XorO() {
+  let random = Math.floor(Math.random() * 10);
+  if ((gameState.singlePlayer = false)) {
+    if (random % 2 == 0) {
+      ((gameState.playerOne = "O"), (gameState.currentPlayer = "O")),
+        (gameState.playerTwo = "X");
+    } else {
+      ((gameState.playerTwo = "O"), (gameState.currentPlayer = "O")),
+        (gameState.playerOne = "X");
+    }
+  } else if (random % 2 == 0) {
+    ((gameState.playerOne = "O"), (gameState.currentPlayer = "O")),
+      (gameState.playerPC = "X");
+  } else {
+    ((gameState.playerOne = "X"), (gameState.currentPlayer = "O")),
+      (gameState.playerPC = "O");
+  }
+}
 
 //**SCORE TICKER */
 // should display player names and 'Computer' for 1p
 
-
-
 //Render Function ==> Loop over the board, use the
-// indexes and values to query the element and 
+// indexes and values to query the element and
 // update it in the browser
 
 //** UPDATE PROGRESS, */
@@ -122,7 +191,6 @@ function colorize (event){
 // function updateScore() {
 //     //update score ticker
 // }
-
 
 //winning functions
 // check every possibility? no
