@@ -3,6 +3,15 @@
     font-size: 30px;
 }
 
+.grid {
+    background-color: lightgrey;
+    height: 300px;
+    width: 300px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
 .score{
     display: flex;
     flex-wrap: wrap;
