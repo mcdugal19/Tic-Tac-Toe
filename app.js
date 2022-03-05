@@ -4,7 +4,7 @@ const gameState = {
     [null, null, null],
     [null, null, null],
   ],
-  PlayerOrder: XorO,
+  
   singlePlayer: true,
   playerOne: "",
   playerTwo: "",
@@ -16,18 +16,23 @@ const gameState = {
   p1score: 0,
   p2score: 0,
   PCscore: 0,
-  //scoreDisplay: [score1, score2, scorePC],
+  playerTurn: "",
+  // still unable to clear boxes or clear board.
+  boxes: "",
+  
 
   // finished: clearboardfunc
 };
 let p1score = document.querySelector(".score1");
-  p1score.innerHTML = gameState.p1score;
+p1score.innerHTML = gameState.p1score;
 
-  let p2score = document.querySelector(".score2");
-  p2score.innerHTML = gameState.p2score;
+let p2score = document.querySelector(".score2");
+p2score.innerHTML = gameState.p2score;
 
-  let PCscore = document.querySelector(".scorePC");
-  PCscore.innerHTML = gameState.PCscore;
+let PCscore = document.querySelector(".scorePC");
+PCscore.innerHTML = gameState.PCscore;
+
+let boxes = document.querySelectorAll(".box")
 
 const grid = document.querySelector(".grid");
 
@@ -40,122 +45,174 @@ grid.addEventListener("click", function (event) {
 
   // not quite functioning *overwrite not present
   // add all of this to a function
-  winningcomboX(event.target, x, y);
+  markXorO(event.target, x, y);
+  checkForWin(event.target, x, y);
+  clearBoard(event, x, y);
 });
 
+
 // with extra time work to reduce the # of if statements
-function winningcomboX(e, x, y) {
-  if (e !== "X" || "O") {
+function markXorO(e, x, y) {
+  if (e.innerText !== "X" || "O") {
     gameState.board[x][y] = gameState.currentPlayer;
+    
     if (gameState.currentPlayer === "X") {
       e.innerText = "X";
       gameState.currentPlayer = "O";
-      if (
+        
+    } else if (gameState.currentPlayer === "O") {
+      e.innerText = "O";
+      gameState.currentPlayer = "X";
+      
+  }
+}
+}
+function clearBoard(e, x, y){
+    if(
+        gameState.board[0][0] === "X" &&
+        gameState.board[0][1] === "X" &&
+        gameState.board[0][2] === "X"
+        ) {
+        gameState.boxes.innerHTML = "";
+        gameState.board[x][y] = gameState.boxes
+        }
+}
+
+function checkForWin(e, x, y){
+    if (
         gameState.board[0][0] === "X" &&
         gameState.board[0][1] === "X" &&
         gameState.board[0][2] === "X"
       ) {
-        gameState.p2score++;
-        p2score.innerHTML = gameState.p2score;
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[0][0] === "X" &&
         gameState.board[1][0] === "X" &&
         gameState.board[2][0] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[2][0] === "X" &&
         gameState.board[2][1] === "X" &&
         gameState.board[2][2] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[0][2] === "X" &&
         gameState.board[1][2] === "X" &&
         gameState.board[2][2] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[0][0] === "X" &&
         gameState.board[1][1] === "X" &&
         gameState.board[2][2] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[0][2] === "X" &&
         gameState.board[1][1] === "X" &&
         gameState.board[2][0] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[0][1] === "X" &&
         gameState.board[1][1] === "X" &&
         gameState.board[2][1] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       } else if (
         gameState.board[1][0] === "X" &&
         gameState.board[1][1] === "X" &&
         gameState.board[1][2] === "X"
       ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
         window.alert("Player X won");
       }
-    } else if (gameState.currentPlayer === "O") {
-      event.target.innerText = "O";
-      gameState.currentPlayer = "X";
       if (
         gameState.board[0][0] === "O" &&
         gameState.board[0][1] === "O" &&
         gameState.board[0][2] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[0][0] === "O" &&
         gameState.board[1][0] === "O" &&
         gameState.board[2][0] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[2][0] === "O" &&
         gameState.board[2][1] === "O" &&
         gameState.board[2][2] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[0][2] === "O" &&
         gameState.board[1][2] === "O" &&
         gameState.board[2][2] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[0][0] === "O" &&
         gameState.board[1][1] === "O" &&
         gameState.board[2][2] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[0][2] === "O" &&
         gameState.board[1][1] === "O" &&
         gameState.board[2][0] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[0][1] === "O" &&
         gameState.board[1][1] === "O" &&
         gameState.board[2][1] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       } else if (
         gameState.board[1][0] === "O" &&
         gameState.board[1][1] === "O" &&
         gameState.board[1][2] === "O"
       ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
         window.alert("Player O won");
       }
+      
+      
     }
-  }
-}
+
 
 //**HEADER */
 //**User name input */ //add event listener
@@ -179,12 +236,6 @@ nameSubmit.setAttribute("id", "nameSubmit");
 nameForm.appendChild(nameInput);
 nameForm.appendChild(nameSubmit);
 
-//** WHAT IS THIS FOR??? I FORGOT */
-function getVal() {
-  let value = document.getElementById("nameInput");
-  console.log(value);
-}
-getVal();
 
 // Submit button eventListener (maybe use a ternary)
 nameSubmit.addEventListener("click", function (event) {
@@ -196,19 +247,38 @@ nameSubmit.addEventListener("click", function (event) {
     gameState.playerTwoName = nameInput.value;
   }
   let playerOneName = document.querySelector(".playerOneName");
-  playerOneName.innerHTML = 'Player One: ' + gameState.playerOneName;
+  playerOneName.innerHTML = "Player One: " + gameState.playerOneName;
 
   let playerTwoName = document.querySelector(".playerTwoName");
-  playerTwoName.innerHTML = 'Player Two: ' + gameState.playerTwoName;
+  playerTwoName.innerHTML = "Player Two: " + gameState.playerTwoName;
 
   let playerPCName = document.querySelector(".playerPCName");
-  playerPCName.innerHTML = 'Player PC: ' + gameState.playerPCName;
+  playerPCName.innerHTML = "Player PC: Smarty" + gameState.playerPCName;
 
-  
   console.log(gameState.playerOneName);
   console.log(gameState.playerTwoName);
 });
 
+function XorO(e) {
+
+    let random = Math.floor(Math.random() * 10);
+  
+    if ((gameState.singlePlayer = false)) {
+      if (random % 2 == 0) {
+        ((gameState.playerOne = "X"), (gameState.currentPlayer = "X")),
+          (gameState.playerTwo = "O"), (gameState.PlayerTurn = "Player 1 is X");
+      } else {
+        ((gameState.playerTwo = "X"), (gameState.currentPlayer = "X")),
+          (gameState.playerOne = "O"), (gameState.PlayerTurn = "Player 2 is X");
+      }
+    } else if (random % 2 == 0) {
+      ((gameState.playerOne = "X"), (gameState.currentPlayer = "X")),
+        (gameState.playerPC = "O"), (gameState.PlayerTurn = "Player 1 is X");
+    } else {
+      ((gameState.playerOne = "O"), (gameState.currentPlayer = "O")),
+        (gameState.playerPC = "X"), (gameState.PlayerTurn = "Player 1 is O")
+    }
+  }
 //**BUTTON TO CHOOSE 1P OR 2P? follow up on deselect when both are clicked*/
 //
 let button1 = document.createElement("button");
@@ -221,12 +291,34 @@ button2.innerText = "Two Player Game?";
 
 let selectedColor = ".darkgrey";
 
+button1.addEventListener("click", function (event) {
+    gameState.singlePlayer = true;
+    XorO(event);
+
+  if (event.target.tagName === "BUTTON") {
+    event.target.classList.toggle("darkgrey");
+  }
+});
+
+button2.addEventListener("click", function (event) {
+    gameState.singlePlayer = false;
+    XorO(event);
+
+  if (event.target.tagName === "BUTTON") {
+    event.target.classList.toggle("darkgrey");
+
+  }
+});
+
+let PlayerTurnDisplay = document.createElement("p");
+PlayerTurnDisplay.innerText = `Current Player: ${gameState.playerTurn}`;
 //Player Turn Display
 // let playerTurnDisplay = document.createElement("p")
 // playerTurnDisplay.innerText =`Player unassigned` + gameState.playerOneName + ` goes first`
 
 // H1 TAG ORDER (reverse)
 // h1tag.after(playerTurnDisplay);
+h1tag.after(PlayerTurnDisplay)
 
 h1tag.after(nameForm);
 
@@ -251,57 +343,15 @@ h1tag.after(button1);
 
 // let scorePC = document.getElementsByClassName("scorePC");
 
-button1.addEventListener("click", function (event) {
-  gameState.PlayerOrder();
 
-  gameState.singlePlayer = true;
 
-  if (event.target.tagName === "BUTTON") {
-    event.target.classList.toggle("darkgrey");
-  }
-});
 
-button2.addEventListener("click", function (event) {
-  gameState.PlayerOrder();
-
-  gameState.singlePlayer = false;
-  if (event.target.tagName === "BUTTON") {
-    event.target.classList.toggle("darkgrey");
-  }
-});
-
-function colorize(event) {
-  const target = event.target;
-
-  if (event.target.tagName === "button") {
-    event.target.classList.toggle(selectedColor);
-    console.log(event.target, "color");
-  }
-  console.log(event.target.tagName, "outside if");
-}
 
 //**RANDOMIZE ORDER FUNCTION */
 //WANT To make it random, insert variable
 // then add a function to randomize the x and o even vs odd
 // math.floor(math.random()) look up doc *change X
-function XorO() {
-  let random = Math.floor(Math.random() * 10);
-  if ((gameState.singlePlayer = false)) {
-    if (random % 2 == 0) {
-      ((gameState.playerOne = "O"), (gameState.currentPlayer = "O")),
-        (gameState.playerTwo = "X");
-    } else {
-      ((gameState.playerTwo = "O"), (gameState.currentPlayer = "O")),
-        (gameState.playerOne = "X");
-    }
-  } else if (random % 2 == 0) {
-    ((gameState.playerOne = "O"), (gameState.currentPlayer = "O")),
-      (gameState.playerPC = "X");
-  } else {
-    ((gameState.playerOne = "X"), (gameState.currentPlayer = "O")),
-      (gameState.playerPC = "O");
-  }
-}
+
 
 //**SCORE TICKER */
 // should display player names and 'Computer' for 1p
