@@ -18,10 +18,14 @@ const gameState = {
   PCscore: 0,
   playerTurn: "",
   // still unable to clear boxes or clear board.
-  boxes: "",
+  clearBoxes: [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+  ],
   
 
-  // finished: clearboardfunc
+  // finished: clearBoard function
 };
 let p1score = document.querySelector(".score1");
 p1score.innerHTML = gameState.p1score;
@@ -33,6 +37,7 @@ let PCscore = document.querySelector(".scorePC");
 PCscore.innerHTML = gameState.PCscore;
 
 let boxes = document.querySelectorAll(".box")
+boxes.innerHTML = gameState.boxes
 
 const grid = document.querySelector(".grid");
 
@@ -47,13 +52,14 @@ grid.addEventListener("click", function (event) {
   // add all of this to a function
   markXorO(event.target, x, y);
   checkForWin(event.target, x, y);
-  clearBoard(event, x, y);
+  clearBoard(event, x, y, gameState);
+  
 });
 
 
 // with extra time work to reduce the # of if statements
 function markXorO(e, x, y) {
-  if (e.innerText !== "X" || "O") {
+  if (event.target !== "X" || "O") {
     gameState.board[x][y] = gameState.currentPlayer;
     
     if (gameState.currentPlayer === "X") {
@@ -64,17 +70,18 @@ function markXorO(e, x, y) {
       e.innerText = "O";
       gameState.currentPlayer = "X";
       
-  }
+  } 
 }
 }
-function clearBoard(e, x, y){
+//*** clear function not working */
+function clearBoard(e, x, y, board, clearBoard){
+    
     if(
         gameState.board[0][0] === "X" &&
         gameState.board[0][1] === "X" &&
         gameState.board[0][2] === "X"
         ) {
-        gameState.boxes.innerHTML = "";
-        gameState.board[x][y] = gameState.boxes
+        document.button.replaceWith(gameState.clearBoard);
         }
 }
 
@@ -213,6 +220,21 @@ function checkForWin(e, x, y){
       
     }
 
+function PCmark(e, x, y, boxes){
+    // if statement to determine whether single player = true
+    // if (true){ mark currentPlayer "X" or "O" in random box}
+    // use random box from math.floor.random
+    // increment player turn
+    gameState.board[x][y] = gameState.boxes;
+    let random = Math.floor(Math.random() * 10);
+    if(gameState.singlePlayer = true){
+
+    }
+}
+
+// let PCmark = setTimeout(function PCmark(e, x, y) {
+    
+// }, 1000);
 
 //**HEADER */
 //**User name input */ //add event listener
@@ -298,6 +320,7 @@ button1.addEventListener("click", function (event) {
   if (event.target.tagName === "BUTTON") {
     event.target.classList.toggle("darkgrey");
   }
+
 });
 
 button2.addEventListener("click", function (event) {
@@ -328,24 +351,6 @@ h1tag.after(button2);
 
 h1tag.after(button1);
 
-// SCORE TICKER VARIABLES (i++ each score with each win)
-// function scoreTick() {
-//   for (let i = 0; i <= 10; i++) {
-//     let score1value = [i];
-//   }
-//   return score1value;
-// }
-//
-// let score1 = document.getElementsByClassName("score1");
-// score1.innerText = "PLAYER ONE:" + nameInput + "" +score1value
-
-// let score2 = document.getElementsByClassName("score2");
-
-// let scorePC = document.getElementsByClassName("scorePC");
-
-
-
-
 
 //**RANDOMIZE ORDER FUNCTION */
 //WANT To make it random, insert variable
@@ -367,7 +372,7 @@ h1tag.after(button1);
 //     if(gameState.board = finished
 //     ){
 //         //clear gameState.board
-//         //increment winnerscore(function needed)
+//         //increment winnerScore(function needed)
 //     } else {
 //             //gameState.board = keep playing
 //     }
