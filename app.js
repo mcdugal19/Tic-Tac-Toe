@@ -18,14 +18,15 @@ const gameState = {
   PCscore: 0,
   playerTurn: "",
   // still unable to clear boxes or clear board.
-//   clearBoxes: [
-//       ["", "", ""],
-//       ["", "", ""],
-//       ["", "", ""],
-//   ],
+  clearBoxes: [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+  ],
+  
 
-}
-
+  // finished: clearBoard function
+};
 let p1score = document.querySelector(".score1");
 p1score.innerHTML = gameState.p1score;
 
@@ -35,308 +36,201 @@ p2score.innerHTML = gameState.p2score;
 let PCscore = document.querySelector(".scorePC");
 PCscore.innerHTML = gameState.PCscore;
 
+let boxes = document.querySelectorAll(".box")
+boxes.innerHTML = gameState.boxes
 
-const grid = document.getElementById("grid");
+const grid = document.querySelector(".grid");
 
-const cellElements = document.querySelectorAll('[data-cell]')
-
-const winningArr = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-]
-
-const winningMessageText = document.querySelectorAll('[data-winning-message-text]')
-const winningMessage = document.getElementsByClassName("winning-message");
-
-const xClass = 'x'
-const oClass = 'o'
-
-let oTurn  
-let pcTurn
-
-initBoard()
-
-function initBoard (){
-    XorO()
-
-    cellElements.forEach(cell => {
-        cell.addEventListener('click', handleClick, {once:true})
-    
-    })
-    setGridHover()
-}
-
-
-function handleClick(e) {
-    const winningMessageText = document.querySelectorAll('[data-winning-message-text]')
-const winningMessage = document.getElementsByClassName("winning-message");
-    const cell = e.target
-    const currentClass = oTurn ? oClass : xClass
-    placeMark(cell, currentClass)
-    if (checkForWin(currentClass)){
-        matchOver(false)
-    } else if (isCat()) {
-        matchOver(true)
-    } else {
-        changeTurnTwoPlayer()
-        changeTurnSinglePlayer()
-        setGridHover()
-        document.getElementsByClassName("winning-message").classList.remove("show");
-    }
-    
-    //placeMark
-    //check for win
-    //check for Draw
-    // switch turn
-
-}
-
-function matchOver(cat){
-    winningMessage.classList.add("show")
-    if (cat) {
-        winningMessageText.innerText = `Cat!`
-    } else {
-        winningMessageText.innerText = `${oTurn ? "O's" : "X's"} Wins's!`
-    }
-    
-}
-
-function isCat(){
-    return [...cellElements].every(cell => {
-            return cell.classList.contains(xClass) || cell.classList.contains(oClass)
-    })
-}
-
-function checkForWin (currentClass){
-    return winningArr.some(combination => {
-        return combination.every(index => {
-            return cellElements[index].classList.contains(currentClass)
-        })
-    })
-}
-
-function placeMark(cell, currentClass) {
-    cell.classList.add(currentClass)
-}
-
-function changeTurnTwoPlayer(){
-    oTurn = !oTurn
-}
-
-function changeTurnSinglePlayer(){
-    pcTurn = !pcTurn
-
-}
-
-function setGridHover(){
-    grid.classList.remove(xClass)
-    grid.classList.remove(oClass)
-
-    if (oTurn) {
-        grid.classList.add(oClass)
-    } else {
-        grid.classList.add(xClass)
-    }
-
-}
 //board checker needs to be inside grid listener
-// grid.addEventListener("click", function (event) {
-//   const coordinateArray = event.target.id.split(",");
-//   console.log(coordinateArray); //remove this later
-//   const x = coordinateArray[0];
-//   const y = coordinateArray[1];
+grid.addEventListener("click", function (event) {
+  const coordinateArray = event.target.id.split(",");
+  console.log(coordinateArray); //remove this later
+  const x = coordinateArray[0];
+  const y = coordinateArray[1];
 
-//   // not quite functioning *overwrite not present
-//   // add all of this to a function
-//   markXorO(event.target, x, y);
-//   checkForWin(event.target, x, y);
-//   clearBoard(event, x, y, gameState);
+  // not quite functioning *overwrite not present
+  // add all of this to a function
+  markXorO(event.target, x, y);
+  checkForWin(event.target, x, y);
+  clearBoard(event, x, y, gameState);
   
-// });
+});
 
 
 // with extra time work to reduce the # of if statements
-// function markXorO(e, x, y) {
-//   if (event.target !== "X" || "O") {
-//     gameState.board[x][y] = gameState.currentPlayer;
+function markXorO(e, x, y) {
+  if (event.target !== "X" || "O") {
+    gameState.board[x][y] = gameState.currentPlayer;
     
-//     if (gameState.currentPlayer === "X") {
-//       e.innerText = "X";
-//       gameState.currentPlayer = "O";
+    if (gameState.currentPlayer === "X") {
+      e.innerText = "X";
+      gameState.currentPlayer = "O";
         
-//     } else if (gameState.currentPlayer === "O") {
-//       e.innerText = "O";
-//       gameState.currentPlayer = "X";
+    } else if (gameState.currentPlayer === "O") {
+      e.innerText = "O";
+      gameState.currentPlayer = "X";
       
-//   } else {
-//       e.stopPropagation();
-//   }
-// }
-// }
+  } 
+}
+}
 //*** clear function not working */
-// function clearBoard(e, x, y, board, clearBoard){
+function clearBoard(e, x, y, board, clearBoard){
     
-//     if(
-//         gameState.board[0][0] === "X" &&
-//         gameState.board[0][1] === "X" &&
-//         gameState.board[0][2] === "X"
-//         ) {
-//         document.replaceWith(gameState.clearBoard);
-//         }
-// }
+    if(
+        gameState.board[0][0] === "X" &&
+        gameState.board[0][1] === "X" &&
+        gameState.board[0][2] === "X"
+        ) {
+        document.button.replaceWith(gameState.clearBoard);
+        }
+}
 
-// function checkForWin(e, x, y){
-//     if (
-//         gameState.board[0][0] === "X" &&
-//         gameState.board[0][1] === "X" &&
-//         gameState.board[0][2] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[0][0] === "X" &&
-//         gameState.board[1][0] === "X" &&
-//         gameState.board[2][0] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[2][0] === "X" &&
-//         gameState.board[2][1] === "X" &&
-//         gameState.board[2][2] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[0][2] === "X" &&
-//         gameState.board[1][2] === "X" &&
-//         gameState.board[2][2] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[0][0] === "X" &&
-//         gameState.board[1][1] === "X" &&
-//         gameState.board[2][2] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[0][2] === "X" &&
-//         gameState.board[1][1] === "X" &&
-//         gameState.board[2][0] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[0][1] === "X" &&
-//         gameState.board[1][1] === "X" &&
-//         gameState.board[2][1] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       } else if (
-//         gameState.board[1][0] === "X" &&
-//         gameState.board[1][1] === "X" &&
-//         gameState.board[1][2] === "X"
-//       ) {
-//         gameState.p1score++;
-//         p1score.innerHTML = gameState.p1score;
-//         window.alert("Player X won");
-//       }
-//       if (
-//         gameState.board[0][0] === "O" &&
-//         gameState.board[0][1] === "O" &&
-//         gameState.board[0][2] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[0][0] === "O" &&
-//         gameState.board[1][0] === "O" &&
-//         gameState.board[2][0] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[2][0] === "O" &&
-//         gameState.board[2][1] === "O" &&
-//         gameState.board[2][2] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[0][2] === "O" &&
-//         gameState.board[1][2] === "O" &&
-//         gameState.board[2][2] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[0][0] === "O" &&
-//         gameState.board[1][1] === "O" &&
-//         gameState.board[2][2] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[0][2] === "O" &&
-//         gameState.board[1][1] === "O" &&
-//         gameState.board[2][0] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[0][1] === "O" &&
-//         gameState.board[1][1] === "O" &&
-//         gameState.board[2][1] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       } else if (
-//         gameState.board[1][0] === "O" &&
-//         gameState.board[1][1] === "O" &&
-//         gameState.board[1][2] === "O"
-//       ) {
-//         gameState.p2score++;
-//         p2score.innerHTML = gameState.p2score;
-//         window.alert("Player O won");
-//       }
+function checkForWin(e, x, y){
+    if (
+        gameState.board[0][0] === "X" &&
+        gameState.board[0][1] === "X" &&
+        gameState.board[0][2] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[0][0] === "X" &&
+        gameState.board[1][0] === "X" &&
+        gameState.board[2][0] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[2][0] === "X" &&
+        gameState.board[2][1] === "X" &&
+        gameState.board[2][2] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[0][2] === "X" &&
+        gameState.board[1][2] === "X" &&
+        gameState.board[2][2] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[0][0] === "X" &&
+        gameState.board[1][1] === "X" &&
+        gameState.board[2][2] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[0][2] === "X" &&
+        gameState.board[1][1] === "X" &&
+        gameState.board[2][0] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[0][1] === "X" &&
+        gameState.board[1][1] === "X" &&
+        gameState.board[2][1] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      } else if (
+        gameState.board[1][0] === "X" &&
+        gameState.board[1][1] === "X" &&
+        gameState.board[1][2] === "X"
+      ) {
+        gameState.p1score++;
+        p1score.innerHTML = gameState.p1score;
+        window.alert("Player X won");
+      }
+      if (
+        gameState.board[0][0] === "O" &&
+        gameState.board[0][1] === "O" &&
+        gameState.board[0][2] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[0][0] === "O" &&
+        gameState.board[1][0] === "O" &&
+        gameState.board[2][0] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[2][0] === "O" &&
+        gameState.board[2][1] === "O" &&
+        gameState.board[2][2] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[0][2] === "O" &&
+        gameState.board[1][2] === "O" &&
+        gameState.board[2][2] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[0][0] === "O" &&
+        gameState.board[1][1] === "O" &&
+        gameState.board[2][2] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[0][2] === "O" &&
+        gameState.board[1][1] === "O" &&
+        gameState.board[2][0] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[0][1] === "O" &&
+        gameState.board[1][1] === "O" &&
+        gameState.board[2][1] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      } else if (
+        gameState.board[1][0] === "O" &&
+        gameState.board[1][1] === "O" &&
+        gameState.board[1][2] === "O"
+      ) {
+        gameState.p2score++;
+        p2score.innerHTML = gameState.p2score;
+        window.alert("Player O won");
+      }
       
       
-//     }
+    }
 
-// function PCmark(e, x, y, boxes){
-//     // if statement to determine whether single player = true
-//     // if (true){ mark currentPlayer "X" or "O" in random box}
-//     // use random box from math.floor.random
-//     // increment player turn
-//     gameState.board[x][y] = gameState.boxes;
-//     let random = Math.floor(Math.random() * 10);
-//     if(gameState.singlePlayer = true){
+function PCmark(e, x, y, boxes){
+    // if statement to determine whether single player = true
+    // if (true){ mark currentPlayer "X" or "O" in random box}
+    // use random box from math.floor.random
+    // increment player turn
+    gameState.board[x][y] = gameState.boxes;
+    let random = Math.floor(Math.random() * 10);
+    if(gameState.singlePlayer = true){
 
-//     }
-// }
+    }
+}
 
 // let PCmark = setTimeout(function PCmark(e, x, y) {
     
@@ -387,24 +281,24 @@ nameSubmit.addEventListener("click", function (event) {
   console.log(gameState.playerTwoName);
 });
 
-function XorO() {
+function XorO(e) {
 
     let random = Math.floor(Math.random() * 10);
   
     if ((gameState.singlePlayer = false)) {
       if (random % 2 == 0) {
-        ((gameState.playerOne = xClass), (gameState.currentPlayer = xClass)),
-          (gameState.playerTwo = oClass)
+        ((gameState.playerOne = "X"), (gameState.currentPlayer = "X")),
+          (gameState.playerTwo = "O"), (gameState.PlayerTurn = "Player 1 is X");
       } else {
-        ((gameState.playerTwo = xClass), (gameState.currentPlayer = xClass)),
-          (gameState.playerOne = oClass)
+        ((gameState.playerTwo = "X"), (gameState.currentPlayer = "X")),
+          (gameState.playerOne = "O"), (gameState.PlayerTurn = "Player 2 is X");
       }
     } else if (random % 2 == 0) {
-      ((gameState.playerOne = xClass), (gameState.currentPlayer = xClass)),
-        (gameState.playerPC = oClass)
+      ((gameState.playerOne = "X"), (gameState.currentPlayer = "X")),
+        (gameState.playerPC = "O"), (gameState.PlayerTurn = "Player 1 is X");
     } else {
-      ((gameState.playerOne = oClass), (gameState.currentPlayer = oClass)),
-        (gameState.playerPC = xClass)
+      ((gameState.playerOne = "O"), (gameState.currentPlayer = "O")),
+        (gameState.playerPC = "X"), (gameState.PlayerTurn = "Player 1 is O")
     }
   }
 //**BUTTON TO CHOOSE 1P OR 2P? follow up on deselect when both are clicked*/
@@ -439,15 +333,15 @@ button2.addEventListener("click", function (event) {
   }
 });
 
-// let PlayerTurnDisplay = document.createElement("p");
-// PlayerTurnDisplay.innerText = `Current Player: ${gameState.playerTurn}`;
+let PlayerTurnDisplay = document.createElement("p");
+PlayerTurnDisplay.innerText = `Current Player: ${gameState.playerTurn}`;
 //Player Turn Display
 // let playerTurnDisplay = document.createElement("p")
 // playerTurnDisplay.innerText =`Player unassigned` + gameState.playerOneName + ` goes first`
 
 // H1 TAG ORDER (reverse)
 // h1tag.after(playerTurnDisplay);
-// h1tag.after(PlayerTurnDisplay)
+h1tag.after(PlayerTurnDisplay)
 
 h1tag.after(nameForm);
 
