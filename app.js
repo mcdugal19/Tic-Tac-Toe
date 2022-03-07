@@ -45,38 +45,62 @@ grid.addEventListener("click", function (event) {
 
   // not quite functioning *overwrite not present
   // add all of this to a function
+  // checkForMark(event.target, x, y)
   markXorO(event.target, x, y);
   checkForWin(event.target, x, y);
-  clearBoard(event, x, y);
+  
 });
 
 
+// function checkForMark(event, x, y){
+//     if (!event.target.innerText){
+//       markXorO(event.target, x, y)
+//     }
+// }
+
 // with extra time work to reduce the # of if statements
 function markXorO(e, x, y) {
-  if (e.innerText !== "X" || "O") {
+  // let targetvalue = e.target.value
+  // targetvalue = gameState.currentPlayer
+  if (e.innerHTML !== "X" || "O") {
     gameState.board[x][y] = gameState.currentPlayer;
     
     if (gameState.currentPlayer === "X") {
-      e.innerText = "X";
+      e.innerHTML = "X";
       gameState.currentPlayer = "O";
         
     } else if (gameState.currentPlayer === "O") {
-      e.innerText = "O";
+      e.innerHTML = "O";
       gameState.currentPlayer = "X";
       
   }
 }
 }
-function clearBoard(e, x, y){
-    if(
-        gameState.board[0][0] === "X" &&
-        gameState.board[0][1] === "X" &&
-        gameState.board[0][2] === "X"
-        ) {
-        gameState.boxes.innerHTML = "";
-        gameState.board[x][y] = gameState.boxes
-        }
-}
+
+let resetButton = document.querySelector(".reset");
+
+resetButton.addEventListener("click", function (event){
+  
+  console.log(gameState.board)
+})
+
+// function clearBoard(){
+//   gameState.board = [
+//     [null, null, null],
+//     [null, null, null],
+//     [null, null, null],
+//   ]
+//     // if(
+//     //     gameState.board[0][0] === "X" &&
+//     //     gameState.board[0][1] === "X" &&
+//     //     gameState.board[0][2] === "X"
+//     //     ) {
+//     //     gameState.boxes.innerText = "";
+//     //     gameState.board[x][y] = gameState.boxes
+//     //     gameState.board[0][0] 
+
+//     //     }
+// }
 
 function checkForWin(e, x, y){
     if (
@@ -86,6 +110,7 @@ function checkForWin(e, x, y){
       ) {
         gameState.p1score++;
         p1score.innerHTML = gameState.p1score;
+        
         window.alert("Player X won");
       } else if (
         gameState.board[0][0] === "X" &&
@@ -210,7 +235,7 @@ function checkForWin(e, x, y){
         window.alert("Player O won");
       }
       
-      
+     
     }
 
 
